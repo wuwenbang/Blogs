@@ -1,9 +1,7 @@
-enum Direction {
-  NORTH,
-  SOUTH,
-  EAST,
-  WEST,
+interface Action {
+  (): void;
 }
-
-let dir: Direction = Direction.NORTH;
-console.log(dir);
+const sayHi: Action = () => {
+  console.log("Hi!");
+};
+sayHi();
