@@ -79,7 +79,7 @@ type Person = {
 };
 ```
 
-## 3. Inteface 和 Type Alias 的相同点
+## 3. Inteface 和 Type 的相同点
 
 ### 3.1 都可以用来描述对象或函数
 
@@ -133,7 +133,7 @@ type Point = PointX & {
 
 PS：接口可以扩展类型别名，同理，类型别名也可以扩展接口。
 
-## 4. Inteface 和 Type Alias 的不同点
+## 4. Inteface 和 Type 的不同点
 
 ### 4.1 type 可以声明基本类型，而 interface 不行
 
@@ -235,5 +235,5 @@ type Point = {
 
 ## 参考文章
 
-[TypeScript 中手册](https://typescript.bootcss.com/interfaces.html)
-[TypeScript Interface vs Type 知多少](https://juejin.cn/post/6844904114925600776#heading-11)
+- [TypeScript 中文手冊](https://typescript.bootcss.com/interfaces.html)
+- [TypeScript Interface vs Type 知多少](https://juejin.cn/post/6844904114925600776#heading-11)
