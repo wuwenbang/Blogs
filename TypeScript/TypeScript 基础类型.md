@@ -320,8 +320,7 @@ type Foo = string | number | boolean;
 `controlFlowAnalysisWithNever` 方法总是穷尽了 `Foo` 的所有可能类型。
 通过这个示例，我们可以得出一个结论：使用 `never` 避免出现新增了`联合类型`没有对应的实现，目的就是写出类型绝对安全的代码。
 
-### 参考文献
+## 参考文章
 
-[TypeScript 中文手册](https://typescript.bootcss.com/basic-types.html)
-
-[一份不可多得的 TS 学习指南](https://juejin.cn/post/6872111128135073806#heading-28)
+- [TypeScript 中文手册](https://typescript.bootcss.com/basic-types.html)
+- [一份不可多得的 TS 学习指南](https://juejin.cn/post/6872111128135073806#heading-28)

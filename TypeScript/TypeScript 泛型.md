@@ -304,4 +304,7 @@ type NumObjectMember = ObjectMember<NumObject>; // number
 
 在上面示例中，当类型 `T` 满足 `T extends MyObject` 约束时，我们会使用 `infer` 关键字声明了一个类型变量 `V`，并返回该类型，否则返回 `never` 类型。
 
-## 8. 泛型类型工具
+## 8. 参考文章
+
+- [TypeScript 中文手册](https://typescript.bootcss.com/basic-types.html)
+- [一份不可多得的 TS 学习指南](https://juejin.cn/post/6872111128135073806#heading-28)

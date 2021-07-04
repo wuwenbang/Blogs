@@ -71,3 +71,8 @@ function initialize() {
   count = 10;
 }
 ```
+
+## 4. 参考文章
+
+- [TypeScript 中文手册](https://typescript.bootcss.com/basic-types.html)
+- [一份不可多得的 TS 学习指南](https://juejin.cn/post/6872111128135073806#heading-28)
