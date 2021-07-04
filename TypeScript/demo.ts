@@ -1,8 +1,10 @@
-let x!: number;
-initialize();
-// Variable 'x' is used before being assigned.(2454)
-console.log(2 * x); // Error
-
-function initialize() {
-  x = 10;
+interface MyObject<T = any> {
+  key: T;
 }
+
+type StrObject = MyObject<string>;
+type NumObject = MyObject<number>;
+
+type ObjectMember<T> = T extends MyObject<infer V> ? V : never;
+type StrObjectMember = ObjectMember<StrObject>; // string
+type NumObjectMember = ObjectMember<NumObject>; // number
