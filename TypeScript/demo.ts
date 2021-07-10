@@ -1,10 +1,8 @@
-interface MyObject<T = any> {
-  key: T;
-}
+// type T = string & unknown;
+// type U = string | unknown;
 
-type StrObject = MyObject<string>;
-type NumObject = MyObject<number>;
-
-type ObjectMember<T> = T extends MyObject<infer V> ? V : never;
-type StrObjectMember = ObjectMember<StrObject>; // string
-type NumObjectMember = ObjectMember<NumObject>; // number
+type T = string & never;
+type U = string | never;
+type Void = void;
+// const v:void = undefined
+const v: void = null;
