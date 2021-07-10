@@ -4,5 +4,4 @@
 type T = string & never;
 type U = string | never;
 type Void = void;
-// const v:void = undefined
-const v: void = null;
+const v: void = undefined;
