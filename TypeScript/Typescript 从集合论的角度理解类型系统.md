@@ -62,3 +62,5 @@ type T2 = ObjectA extends ObjectB ? true : false // T2 = true
 // extends => 未知领域
 type T3 = number extends {} ? true : false // T3 = true
 ```
+
+我们用传统的
