@@ -10,21 +10,21 @@
 
 ```ts
 interface Person {
-  name: string
-  age: number
+  name: string;
+  age: number;
 }
 
 const tom: Partial<Person> = {
-  name: 'Tom',
-}
+  name: "Tom",
+};
 ```
 
 `Partial<Person>` 等价于
 
 ```ts
 interface Person {
-  name?: string
-  age?: number
+  name?: string;
+  age?: number;
 }
 ```
 
@@ -36,8 +36,8 @@ interface Person {
 
 ```ts
 type MyPartial<T> = {
-  [P in keyof T]?: T[P]
-}
+  [P in keyof T]?: T[P];
+};
 ```
 
 ## Readonly\<T>
@@ -64,8 +64,8 @@ tom.age = 22 // error
 
 ```ts
 interface Person {
-  readonly name: string
-  readonly age: number
+  readonly name: string;
+  readonly age: number;
 }
 ```
 
@@ -79,8 +79,8 @@ interface Person {
 
 ```ts
 type Readonly<T> = {
-  readonly [P in keyof T]: T[P]
-}
+  readonly [P in keyof T]: T[P];
+};
 ```
 
 ## Required\<T>
@@ -131,9 +131,9 @@ type Required<T> = {
 
 ```ts
 // 快速生成一个 Person 对象
-type Person = Record<'name' | 'country', string>
+type Person = Record<"name" | "country", string>;
 
-const Tom: Person = { name: 'Tom', country: 'America' }
+const Tom: Person = { name: "Tom", country: "America" };
 ```
 
 **实现原理**:
@@ -143,8 +143,8 @@ const Tom: Person = { name: 'Tom', country: 'America' }
 
 ```ts
 type MyRecord<K extends keyof any, T> = {
-  [P in K]: T
-}
+  [P in K]: T;
+};
 ```
 
 ## Exclude\<T,K>
@@ -155,23 +155,23 @@ type MyRecord<K extends keyof any, T> = {
 
 ```ts
 // 从 "a" | "b" | "c" 中排除掉 "a" 类型
-type T1 = Exclude<'a' | 'b' | 'c', 'a'>
+type T1 = Exclude<"a" | "b" | "c", "a">;
 // T1 = "b" | "c"
 
 // 从 string | number | boolean 中排除掉 string 类型
-type T2 = Exclude<string | number | boolean, string>
+type T2 = Exclude<string | number | boolean, string>;
 // T2 = number | boolean
 ```
 
 **实现原理**：
 
 1. 通过条件类型`T extends U ? never : T` 对 `T` 参数进行判别：
-   - 如果 `T` 是 `U` 的子集，那么返回 `never`（即排除掉`T`）。
-   - 如果 `T` 不是 `U` 的子集，那么返回 `T`。
+   - 如果 `T` 可赋值给 `U` ，那么返回 `never`（即排除掉`T`）。
+   - 如果 `T` 不可赋值给 `U` ，那么返回 `T`。
 2. 通过**分布式条件类型**，如果 `T` 为联合类型，则将条件类型的结果分发为**联合类型**。
 
 ```ts
-type Exclude<T, U> = T extends U ? never : T
+type Exclude<T, U> = T extends U ? never : T;
 ```
 
 ## Extract\<T,K>
@@ -182,14 +182,14 @@ type Exclude<T, U> = T extends U ? never : T
 
 ```ts
 // 从 "a" | "b" | "c" 中提取出 "a" 类型
-type T1 = Extract<'a' | 'b' | 'c', 'a'>
+type T1 = Extract<"a" | "b" | "c", "a">;
 // T1 = "a"
 
 // 从 string | number | boolean 中提取出 string 类型
-type T2 = Extract<string | number | boolean, string>
+type T2 = Extract<string | number | boolean, string>;
 // T2 = string
 
-type T3 = Extract<string | (() => void), Function>
+type T3 = Extract<string | (() => void), Function>;
 // 相当于 type T3 = () => void;
 ```
 
@@ -198,12 +198,12 @@ type T3 = Extract<string | (() => void), Function>
 与 `Exclude` 类似：
 
 1. 通过条件类型`T extends U ? never : T` 对 `T` 参数进行判别：
-   - 如果 `T` 是 `U` 的子集，那么返回 `T`。
-   - 如果 `T` 不是 `U` 的子集，那么返回 `never`（即排除掉`T`）。
+   - 如果 `T` 可赋值给 `U` ，那么返回 `T`。
+   - 如果 `T` 不可赋值给 `U` ，那么返回 `never`（即排除掉`T`）。
 2. 通过**分布式条件类型**，如果 `T` 为联合类型，则将条件类型的结果分发为**联合类型**。
 
 ```ts
-type Extract<T, U> = T extends U ? T : never
+type Extract<T, U> = T extends U ? T : never;
 ```
 
 ## Pick\<T,K>
@@ -214,16 +214,16 @@ type Extract<T, U> = T extends U ? T : never
 
 ```ts
 interface Person {
-  name: string
-  age: number
+  name: string;
+  age: number;
 }
 
 // 从 Person 中摘选出 name 属性
-type PickPerson = Pick<Person, 'name'>
+type PickPerson = Pick<Person, "name">;
 
 const tom: PickPerson = {
-  name: 'Tom',
-}
+  name: "Tom",
+};
 ```
 
 **实现原理**：
@@ -233,8 +233,8 @@ const tom: PickPerson = {
 
 ```ts
 type Pick<T, K extends keyof T> = {
-  [P in K]: T[P]
-}
+  [P in K]: T[P];
+};
 ```
 
 ## Omit\<T,K>
@@ -245,16 +245,16 @@ type Pick<T, K extends keyof T> = {
 
 ```ts
 interface Person {
-  name: string
-  age: number
+  name: string;
+  age: number;
 }
 
 // 从 Person 中剔除掉 name 属性
-type OmitPerson = Pick<Person, 'name'>
+type OmitPerson = Pick<Person, "name">;
 
 const tom: PickPerson = {
   age: 18,
-}
+};
 ```
 
 **实现原理**：
@@ -264,7 +264,7 @@ const tom: PickPerson = {
 3. 通过 `Pick<T,Exclude<keyof T, K>>` 在 `T` 中摘选出排除掉 `K` 的 `T` 的属性。
 
 ```ts
-type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 ```
 
 ## ReturnType\<T>
@@ -274,12 +274,12 @@ type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
 **示例**：
 
 ```ts
-type Fun = () => string
+type Fun = () => string;
 
 // 获取 Fun 返回值的类型
-type T1 = ReturnType<Fun> // T1 = string
+type T1 = ReturnType<Fun>; // T1 = string
 
-type T2 = ReturnType<() => { x: number; y: number }>
+type T2 = ReturnType<() => { x: number; y: number }>;
 // T2 = { x: number, y: number }
 ```
 
@@ -293,5 +293,14 @@ type T2 = ReturnType<() => { x: number; y: number }>
    - 如果 `T` 不是函数类型（`(...args: any) => infer R`），则返回 `any`。
 
 ```ts
-type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any
+type ReturnType<T extends (...args: any) => any> = T extends (
+  ...args: any
+) => infer R
+  ? R
+  : any;
 ```
+
+## 参考资料
+
+- [TypeScript 中文手册](https://typescript.bootcss.com/)
+- [TypeScript 内置工具泛型](https://github.com/chenxiaochun/blog/issues/67)
