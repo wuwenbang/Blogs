@@ -37,5 +37,3 @@ type AB2 = AB<T1>; // 而这样写就是推断为 'a' | 'b'
 > Distributive conditional types are **automatically distributed** over **union types** during **instantiation**.
 
 译：分布式条件类型在**实例化**时，会**自动分发**成**联合类型**。
-
-- 实例化（instantiation）：这里实例化我的理解是声明的泛型被调用
