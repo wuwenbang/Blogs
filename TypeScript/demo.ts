@@ -1,6 +1,13 @@
-type Fun = () => string
+class Collector {
+  fun(params: { name: string; counts: number }): number
+  fun(params: { name: string }): string
+  fun(params: any): any {
+    if (params.counts) {
+      return params.counts
+    } else {
+      return params.name
+    }
+  }
+}
 
-// 获取 Fun 返回值的类型
-type T1 = ReturnType<Fun> // T1 = string
-
-type T2 = ReturnType<() => { x: number; y: number }> // T2 = {x:number,y:number}
+const result = new Collector().fun({ name: 'tom'})
