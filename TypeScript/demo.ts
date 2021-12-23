@@ -1,13 +1,7 @@
-class Collector {
-  fun(params: { name: string; counts: number }): number
-  fun(params: { name: string }): string
-  fun(params: any): any {
-    if (params.counts) {
-      return params.counts
-    } else {
-      return params.name
-    }
-  }
+interface Point {
+  x: number
+  y: number
 }
-
-const result = new Collector().fun({ name: 'tom'})
+type IsPointSubset<T> = T extends Point ? true : false
+type Result1 = IsPointSubset<{ x: number; y: number }> // true
+type Result2 = IsPointSubset<{ x: number; z: number }> // false
