@@ -64,6 +64,9 @@ theme: gaia
 
 ## 5.2 useRef 用法
 
+- 不触发渲染的状态
+- 获取 DOM 元素
+
 ---
 
 # 6. 副作用 useEffect
