@@ -1,9 +1,7 @@
-interface A {
-  x: number;
-}
-
-const obj = {
-  x: 1,
-  y: 2,
+const COLOR_MAP = {
+  red: '红色',
+  blue: '蓝色',
+  green: '绿色',
 };
-const a: A = obj; // ok
+const color: string = 'red';
+const result = COLOR_MAP[color as keyof typeof COLOR_MAP];
