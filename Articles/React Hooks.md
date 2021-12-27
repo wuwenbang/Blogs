@@ -14,10 +14,22 @@ ReactDOM.render(<App />, document.getElementById('root'));
 `UI = f()`，即视图等于一个函数执行的结果。
 
 # 2. 内部状态 useState
-现在我们已经可以通过 React 渲染一个页面了，然而他就岁月尽好的躺在那，但是如果我想来点动静：比如添加一个计数器——一个数字和一个按钮，每次点击就 +1 ，这个时候我们就需要组件内部的状态了：用`useState` 创建内部状态。
-```js
 
+现在我们已经可以通过 React 渲染一个页面了，然而他就岁月尽好的躺在那，但是如果我想来点动静：比如添加一个计数器——一个数字和一个按钮，每次点击就 +1 ，这个时候我们就需要组件内部的状态了：用`useState` 创建内部状态。
+
+```js
+function App() {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <div>{count}</div>
+      <button onClick={() => setCount(count + 1)}></button>
+    </div>
+  );
+}
+ReactDOM.render(<App />, document.getElementById('root'));
 ```
+
 `UI = f(state)`
 
 # 3. 外部参数 Props
