@@ -1,7 +1,7 @@
-const COLOR_MAP = {
-  red: '红色',
-  blue: '蓝色',
-  green: '绿色',
-};
-const color: string = 'red';
-const result = COLOR_MAP[color as keyof typeof COLOR_MAP];
+interface Point {
+  x: number;
+  y: number;
+}
+type IsPointSubset<T> = T extends Point ? true : false;
+type Result1 = IsPointSubset<{ x: number; y: number }>; // true
+type Result2 = IsPointSubset<{ x: number; z: number }>; // false
