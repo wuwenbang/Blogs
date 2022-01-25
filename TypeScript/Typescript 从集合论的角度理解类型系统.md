@@ -13,7 +13,7 @@ type Union = string | number // Union = string | number
 type Intersection = string & number // Intersection = never
 ```
 
-- 对于对象类型来说，联合类型是属性的交集，交叉类型是属性的并集。
+- 对于对象类型来说，联合类型是属性的交集（**勘误：只有在被赋值的对象拥有全部属性的情况下，才表现为属性的交集**），交叉类型是属性的并集。
 
 ```ts
 interface A {
@@ -217,11 +217,11 @@ obj1.z // error
 
 - 联合类型 `Union` 是对象 `A` 和 `B` 的并集，即**对象集合的并集**。
 - 赋值上：具有 `A`或`B`或`A & B` 的属性的对象能赋值给 `Union`。
-- 访问上：为了类型安全，联合类型 `Union` 只能访问 `A` 和 `B` 的**共有属性**。
+- 访问上：为了类型安全，当赋值为 `A` 或 `B` 时，联合类型 `Union` 只能访问 `A` 或 `B` ；当赋值为 `A & B` 时（即全部属性），联合类型 `Union` 只能访问 `A` 和 `B` 的**共有属性**。
 
 ## 3 extends 关键字
 
-根据集合论，`A extends B` 的语意是： `A` 为 `B` 的**子集**。
+根据集合论，`A extends B` 的语意是： `A` 为 `B` 的**子集**。
 
 ### 3.1 extends 用作泛型约束
 
