@@ -137,7 +137,37 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 至此我可以得知：`context` 的改变也会间接导致函数组件重新渲染，核心公式更改为： `UI = f(state,props,context)`。
 
+核心公式中 `state`、`props`、`context` 的变动都会更新视图 UI，但其实仔细思考一下就能发现：`props`和 `context` 只不过是充当了 `state` 的媒介（帮助 `state` 在组件之间传递和共享），真正意义上 UI 更新还是由 `state` 的变动引起的。更为切确的说是： **`setState` 在变更 `state` 的同时触发了重新渲染 `re-render`（重新执行函数组件）进而导致 UI 视图的变更**。这一点对于理解 Hooks 的作用机制来说非常重要。
+
 # 5. 引用 useRef
+
+`useRef` 返回一个可变的 `ref` 对象，其 `.current` 属性被初始化为传入的参数（`initialValue`）。返回的 `ref` 对象在组件的整个生命周期内保持不变。
+
+`useRef` 和 `useState` 都可以在函数组件内部存储值（状态），相较于 `useState` ,`useRef` 可以更新值而不触发重新渲染，或者你可以简单的将 `useState` 理解为变更不触发重新渲染的 `useState`。我们来看一个例子：
+
+```js
+function App() {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0);
+
+  return (
+    <div>
+      <div>countRef:{countRef.current}</div>
+      <div>countState:{count}</div>
+      <button onClick={() => countRef.current++}>change count ref</button>
+      <button onClick={() => setCount(count + 1)}>change count state</button>
+    </div>
+  );
+}
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+
+上述例子中：
+
+- 当点击 `change count ref` 按钮时，页面上没有任何变化；
+- 当点击 `change count state` 按钮时，页面上 `countState` 的值 +1 ，并且 `countRef` 的值也发生了变动。
+
+有意思的是：在 `countState` 变动并且重新渲染的同时，也会把 `countRef` 当前的值渲染出来。（这里再次解释一下：所谓重新渲染就是再次执行一遍函数（例子中`App`），在本例中会重新读取 `countRef.current` 的值然后渲染再页面中。）
 
 # 6. 副作用 useEffect
 
