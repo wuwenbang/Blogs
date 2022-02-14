@@ -126,11 +126,14 @@ function App() {
 }
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
+
 1. 首先，调用 `createContext` 创建一个 `countContext` 上下文。
 2. 在父组件 `App` 中，我们使用 `<countContext.Provider value={count}>` ，将 `count` 作为 `context` 的内容，然后通过 `Provider` 对包裹在其内部的组件**提供 `context`**。
 3. 在子组件 `ChildA`、`ChildB` 中我们使用 `useContext(countContext)` 去**消费 `context`**，此时子组件 `count` 就是通过 `context` 共享的父组件的 `count`。
 
-`UI = f(state,props,context)`
+当我们点击 +1 按钮时，`App` 中 `count` 的值发生改变，`countContext` 值随之改变，并触发重新渲染，`ChildA`、`ChildB` 中 `count` 的值随着 `countContext` 改变而改变。
+
+至此我可以得知：`context` 的改变也会间接导致函数组件重新渲染，核心公式更改为： `UI = f(state,props,context)`。
 
 # 5. 引用 useRef
 
