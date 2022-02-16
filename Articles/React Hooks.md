@@ -1,3 +1,7 @@
+---
+theme: cyanosis
+---
+
 # 1. React 核心公式
 
 当我们在使用 React 函数组件构筑视图的时候，我们到底在干什么呢？
@@ -47,7 +51,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 我们来具体聊一下上述代码中我们到底做了哪些事情：
 
-1. 首先，我们调用 `useState` 函数并传入初始值 `0`，`useState` 函数返回一个包含**状态（state）**和**改变状态的方法（setState）**的元组，最后我们对元组用解构赋值：将状态赋值给 `count` 常量，改变状态的方法赋值给 `setCount` 常量。
+1. 首先，我们调用 `useState` 函数并传入初始值 `0`，`useState` 函数返回一个包含 **状态（state）** 和 **改变状态的方法（setState）** 的元组，最后我们对元组用解构赋值：将状态赋值给 `count` 常量，改变状态的方法赋值给 `setCount` 常量。
 2. 然后我们定义 `add` 函数：调用 `setCount` 方法并传入 `count + 1` 的值。
 3. 接着我们在 `return` 的 `div` 元素内渲染 `count`，同时将函数 `add` 绑定在 `button` 元素的 `onClick` 事件上。
 
@@ -215,7 +219,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
 控制台打印如下：
-[!useEffect 执行顺序](https://imgtu.com/i/HgL5Ed)
+[![HgL5Ed.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a131e00a1b5a47528deabace98200739~tplv-k3u1fbpfcp-zoom-1.image)](https://imgtu.com/i/HgL5Ed)
 根据打印信息可以得到：
 
 - 第一次渲染时，执行了 `effect` 函数；
@@ -237,7 +241,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 `useMemo(fn, deps)`
 
-`useMemo` 的参数分别是一个创建函数和一个依赖数组，创建函数需要一个返回值，只有在依赖项发生改变的时候，才会重新调用此函数返回一个新的值。
+`useMemo` 的参数分别是一个创建函数 `fn` 和一个依赖数组 `deps`，创建函数需要一个返回值，只有在依赖项发生改变的时候，才会重新调用此函数返回一个新的值。
 
 如果使用过 Vue 的小伙伴肯定知道计算属性 `computed`，`useMemo` 的作用与其类似，主要用于缓存需要计算的值（`state` 的衍生值）。举一个例子：
 
@@ -249,7 +253,7 @@ function App() {
   }, [list]);
   return (
     <div>
-      <div>{list.map(item => item)}</div>
+      <div>{list.map((item) => item)}</div>
       <div>listLength:{listLength}</div>
       <button onClick={() => setList([...list, 1])}>push</button>
     </div>
@@ -267,7 +271,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 `useCallback(fn, deps)`
 
-`useCallback` 的参数分别是一个创建函数和一个依赖数组，返回值是创建函数的引用，只有当依赖项变化发生改变的时候，`useCallback` 才会重新创建函数并返回一个新的引用。
+`useCallback` 的参数分别是一个创建函数 `fn` 和一个依赖数组 `deps`，返回值是创建函数的引用，只有当依赖项变化发生改变的时候，`useCallback` 才会重新创建函数并返回一个新的引用。
 
 > `useCallback(fn, deps)` 相当于 `useMemo(() => fn, deps)`
 
@@ -278,14 +282,16 @@ ReactDOM.render(<App />, document.getElementById('root'));
 1. 函数组件内部定义的函数需要作为其他 Hooks 的依赖。
 2. 父组件内部定义的函数需要传递给子组件，并且子组件由`React.memo`包裹。
 
+> `React.memo` 会检查 `props` 变更，如果 `props` 未变动，React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。
+
 场景 1 应该很容易理解，我们主要解释一下场景 2，例子如下：
 
 ```js
-const Button = React.memo(({ onClick }) => {
+const Child = React.memo(({ onClick }) => {
   console.log(`Button render`);
   return (
     <div>
-      <button onClick={onClick}>click button</button>
+      <button onClick={onClick}>child button</button>
     </div>
   );
 });
@@ -293,11 +299,11 @@ const Button = React.memo(({ onClick }) => {
 function App() {
   const [countA, setCountA] = useState(0);
   const [countB, setCountB] = useState(0);
-  // 未包裹 useCallback
-  // const onClick = () => {
-  //   setCountA(countA + 1);
-  // };
-  // 包裹 useCallback
+  // 情况1：未包裹 useCallback
+  const onClick = () => {
+    setCountA(countA + 1);
+  };
+  // 情况2：包裹 useCallback
   const onClick = useCallback(() => {
     setCountA(countA + 1);
   }, []);
@@ -305,9 +311,18 @@ function App() {
     <div>
       <div>countA:{countA}</div>
       <div>countB:{countB}</div>
-      <Button onClick={onClick} />
-      <button onClick={() => setCountB(countB + 1)}>countB add</button>
+      <Child onClick={onClick1} />
+      <button onClick={() => setCountB(countB + 1)}>App button</button>
     </div>
   );
 }
 ```
+
+上例中，`Child` 子组件由 `React.memo` 包裹，接收 `onClick` 函数作为参数。
+
+- 情况 1：`onClick` 未包裹 `useCallback` ，当点击 `app button` 时，触发重新渲染，`onClick` 重新生成函数引用，导致 `Child` 子组件重新渲染。
+- 情况 2：`onClick` 包裹 `useCallback` ，当点击 `app button` 时，触发重新渲染，`onClick` 不会生成新的引用，避免了 `Child` 子组件重新渲染。
+
+# 参考文档
+
+- [React 官方文档](https://zh-hans.reactjs.org/docs/getting-started.html)
