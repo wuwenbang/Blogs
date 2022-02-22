@@ -44,36 +44,33 @@ const eventHub = {
 };
 
 // 手写AJAX
-var request = new XMLHttpRequest();
+// var request = new XMLHttpRequest();
 
-request.open('GET', '/xxx');
-request.onreadystatechange = () => {
-  if (request.readyState === 4) {
-    if (
-      (request.status >= 200 && request.status < 300) ||
-      request.status === 304
-    ) {
-      console.log('success');
-    } else {
-      console.log('failed');
+// request.open('GET', '/xxx');
+// request.onreadystatechange = () => {
+//   if (request.readyState === 4) {
+//     if (
+//       (request.status >= 200 && request.status < 300) ||
+//       request.status === 304
+//     ) {
+//       console.log('success');
+//     } else {
+//       console.log('failed');
+//     }
+//   }
+// };
+// request.onerror = () => {
+//   console.log('error');
+// };
+// request.send('{"name":"frank"}');
+
+// 数组去重
+function unique(list) {
+  const result = [];
+  for (let item of list) {
+    if (result.indexOf(item) === -1) {
+      result.push(item);
     }
   }
-};
-request.onerror = () => {
-  console.log('error');
-};
-request.send('{"name":"frank"}');
-
-// 手写 Promise
-
-class Promise2{
-  constructor(fn){
-
-  }
-  then(f1,f2){
-
-  }
-  catch(){
-
-  }
+  return result;
 }

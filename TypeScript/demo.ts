@@ -1,7 +1,11 @@
-interface Point {
-  x: number;
-  y: number;
+function unique<T>(list: Array<T>) {
+  const result: Array<T> = [];
+  for (let item of list) {
+    if (result.indexOf(item) === -1) {
+      result.push(item);
+    }
+  }
+  return result;
 }
-type IsPointSubset<T> = T extends Point ? true : false;
-type Result1 = IsPointSubset<{ x: number; y: number }>; // true
-type Result2 = IsPointSubset<{ x: number; z: number }>; // false
+
+console.log(unique([1, 2, 3, 3, 3, 1, 2]));
