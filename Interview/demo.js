@@ -26,7 +26,7 @@ const eventHub = {
   map: {},
   on(name, fn) {
     // 入队
-    eventHub.map[name] = eventHub.map[name] || [];
+    if (!eventHub.map[name]) eventHub.map[name] = [];
     eventHub.map[name].push(fn);
   },
   off(name, fn) {
@@ -39,7 +39,7 @@ const eventHub = {
   emit(name, data) {
     const list = eventHub.map[name];
     if (!list) return;
-    list.map((f) => f(data));
+    list.forEach(f => f(data));
   },
 };
 
