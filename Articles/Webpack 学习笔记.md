@@ -1,7 +1,6 @@
-
 ## Babel
 
-node1 -> (parse) -> ast1 -> (traverse) -> ast2 -> (generator) -> node2
+code1 -> (parse) -> ast1 -> (traverse) -> ast2 -> (generator) -> code2
 
 1. parse 通过 Code 生成 AST
 2. traverse 遍历 AST 对某个语句做操作（enter）
@@ -73,3 +72,95 @@ if(document){
    2. 当我们想要加载 css/less/scss/ts/md 文件时，就需要使用 loader
    3. loader 的原理就是把文件内容包装成能运行的 JS 文件
    4. 加载 css 需要用到 style-loader 和 css-loader
+8. Tapable: Webpack 事件/钩子库
+
+## Webpack 流程
+
+1. init
+2. run
+3. compile
+4. compilation
+5. make
+6. afterCompile
+7. seal
+8. codeGeneration
+9. emit
+10. done
+
+## Webpack Loader 与 Plugin
+
+- Loader
+  - 转换器
+  - 用于文件转换，将非 JavaScript 文件转化为 JavaScript 文件。
+- Plugin
+  - 扩展器
+  - 在 webpack 运行的生命周期中会广播出许多事件，plugin 可以监听这些事件，在合适的时机通过 webpack 提供的 API 改变输出结果。
+
+## Webpack 优化技巧 Code Split
+
+1. 单独打包 runtime
+   1. 不单独打包：runtime 在 main.js 中
+   2. 单独打包：runtime.js 和 main.js 分离
+   3. 更新 runtime.js 不会影响 main.js 的缓存
+2. 单独打包 node_modules(verdors)
+3. 多页面优化技巧： `common chunks`
+
+```js
+ optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          priority: 10,
+          minSize: 0, /* 如果不写 0，由于 React 文件尺寸太小，会直接跳过 */
+          test: /[\\/]node_modules[\\/]/, // 为了匹配 /node_modules/ 或 \node_modules\
+          name: 'vendors', // 文件名
+          chunks: 'all',  // all 表示同步加载和异步加载，async 表示异步加载，initial 表示同步加载
+          // 这三行的整体意思就是把两种加载方式的来自 node_modules 目录的文件打包为 vendors.xxx.js
+          // 其中 vendors 是第三方的意思
+        },
+        common: {
+          priority: 5,
+          minSize: 0,
+          minChunks: 2,
+          chunks: 'all',
+          name: 'common'
+        }
+      },
+    },
+  },
+
+```
+
+## Webpack 多页面
+
+多页面打包的原理就是：配置多个 `entry` 和多个 `HtmlWebpackPlugin`
+
+```js
+module.exports = {
+  entry: {
+    page1: './src/pages/page1/app.js', // 页面1
+    page2: './src/pages/page2/app.js', // 页面2
+  },
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    filename: 'js/[name]/[name]-bundle.js', // filename不能写死，只能通过[name]获取bundle的名字
+  },
+};
+```
+
+```js
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/pages/page1/index.html',
+      chunks: ['page1'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/pages/page2/index.html',
+      chunks: ['page2'],
+    }),
+  ],
+};
+```
