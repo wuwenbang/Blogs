@@ -43,7 +43,7 @@ HTTP 1.1 协议下，并发多个 TCP 连接（有上限）
 3. 资源压缩（gzip）：
    1. Nginx：`gzip:on`
    2. NodeJS
-4. 资源精简、
+4. 资源精简：
    1. HTML -> 删空格、删闭合
    2. CSS -> 删未用
    3. JS -> 改局部变量名、tree shaking
@@ -133,4 +133,5 @@ React ： lazy + Suspense
 - 尽量不要使用全局变量
 - 尽量少操作 DOM
 - 不要往页面插入大量的 HTML（innerHtml="longlonglong"）
+- 节流和防抖
 - 虚拟列表

@@ -244,13 +244,13 @@ ReactDOM.render(<App />, document.getElementById('root'));
 ```js
 function App() {
   const [list, setList] = useState([1, 1, 1]);
-  const listLength = useMemo(() => {
-    return list.length;
+  const sum = useMemo(() => {
+    return list.reduce((pre, cur) => pre + cur);
   }, [list]);
   return (
     <div>
       <div>{list.map((item) => item)}</div>
-      <div>listLength:{listLength}</div>
+      <div>sum:{sum}</div>
       <button onClick={() => setList([...list, 1])}>push</button>
     </div>
   );
@@ -259,9 +259,9 @@ function App() {
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-`listLength` 依赖于 `list` 计算 `list` 的长度（是状态 `list` 的衍生值），每次当且仅当 `list` 变动时，会重新调用 `useMemo` 的创建函数，返回一个新的 `length`。
+`sum` 依赖于 `list` 计算 `list` 的和（是状态 `list` 的衍生值），每次当且仅当 `list` 变动时，会重新调用 `useMemo` 的创建函数，返回一个新的 `sum`。
 
-当每次点击 `push` 时，会调用 `setList` 导致 `list` 发生变化，`list` 的变化导致 `listLength` 重新计算，所以可以看到 `listLength` 的值随着 `list` 同步变化。
+当每次点击 `push` 时，会调用 `setList` 导致 `list` 发生变化，`list` 的变化导致 `sum` 重新计算，所以可以看到 `sum` 的值随着 `list` 同步变化。
 
 ## useCallback
 
