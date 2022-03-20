@@ -1,138 +1,60 @@
-// 函数节流
-function throttle(fn, wait) {
-  let timer = null;
-  return (...args) => {
-    if (timer) return;
-    fn(...args);
-    timer = setTimeout(() => {
-      timer = null;
-    }, wait);
-  };
+// 手写 new 函数
+function _new(constructor, ...args) {
+  const obj = {};
+  obj.__proto__ = constructor.prototype;
+  const result = constructor.apply(obj, args);
+  return typeof result === 'object' ? result : obj;
 }
 
-// 函数防抖
-function debounce(fn, wait) {
-  let timer = null;
-  return (...args) => {
-    if (timer) {
-      clearTimeout(timer);
+// 冒泡排序
+function bubbleSort(nums) {
+  for (let i = 0; i < nums.length - 1; i++) {
+    for (let j = 0; j < nums.length - i - 1; j++) {
+      if (nums[j] > nums[j + 1]) {
+        let temp = nums[j];
+        nums[j] = nums[j + 1];
+        nums[j + 1] = temp;
+      }
     }
-    timer = setTimeout(() => fn(...args), wait);
-  };
+  }
+  return nums;
 }
 
-// 发布订阅
-const eventHub = {
-  map: {},
-  on(name, fn) {
-    // 入队
-    if (!eventHub.map[name]) eventHub.map[name] = [];
-    eventHub.map[name].push(fn);
-  },
-  off(name, fn) {
-    const list = eventHub.map[name];
-    if (!list) return;
-    const index = list.indexOf(fn);
-    if (index < 0) return;
-    list.splice(index, 1);
-  },
-  emit(name, data) {
-    const list = eventHub.map[name];
-    if (!list) return;
-    list.forEach(f => f(data));
-  },
+// 选择排序
+function selectSort(nums) {
+  let index = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    index = i;
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[j] < nums[index]) index = j;
+    }
+    if (nums[i] > nums[index]) {
+      let temp = nums[i];
+      nums[i] = nums[index];
+      nums[index] = temp;
+    }
+  }
+  return nums;
+}
+
+// 快速排序
+const quickSort = (nums) => {
+  if (nums.length < 2) {
+    return nums;
+  } else {
+    let left = [];
+    let right = [];
+    let pivot = Math.floor(nums.length / 2);
+    let base = nums.splice(pivot, 1);
+    for (let num of nums) {
+      if (num < base) {
+        left.push(num);
+      } else {
+        right.push(num);
+      }
+    }
+    return quickSort(left).concat(base, quickSort(right));
+  }
 };
 
-// 手写AJAX
-// var request = new XMLHttpRequest();
-
-// request.open('GET', '/xxx');
-// request.onreadystatechange = () => {
-//   if (request.readyState === 4) {
-//     if (
-//       (request.status >= 200 && request.status < 300) ||
-//       request.status === 304
-//     ) {
-//       console.log('success');
-//     } else {
-//       console.log('failed');
-//     }
-//   }
-// };
-// request.onerror = () => {
-//   console.log('error');
-// };
-// request.send('{"name":"frank"}');
-
-// 数组去重
-function unique(list) {
-  const result = [];
-  for (let item of list) {
-    if (result.indexOf(item) === -1) {
-      result.push(item);
-    }
-  }
-}
-// 手写 Promise
-
-class Promise2 {
-  constructor(fn) {}
-  then(f1, f2) {}
-  catch() {}
-}
-
-// 手写深拷贝
-function deepClone(x, cache) {
-  // 解决循环引用
-  if (!cache) {
-    cache = new Map();
-  }
-  if (cache.get(x)) return x;
-  let result;
-  // 如果是对象(引用类型)
-  if (x instanceof Object) {
-    // 开辟内存空间
-    // 如果是函数
-    if (x instanceof Function) {
-      // 如果是普通函数
-      if (x.prototype) {
-        result = function () {
-          return x.apply(this, arguments);
-        };
-      }
-      // 如果是箭头函数
-      else {
-        result = (...args) => x.call(undefined, args);
-      }
-    }
-    // 如果是数组
-    else if (x instanceof Array) {
-      result = [];
-    }
-    // 如果是日期
-    else if (x instanceof Date) {
-      result = new Date(x.valueOf());
-    }
-    // 如果是正则
-    else if (x instanceof RegExp) {
-      result = new RegExp(x.source, x.flags);
-    }
-    // 如果是普通对象
-    else {
-      result = {};
-    }
-    cache.set(x, result);
-    // 赋值属性 递归调用
-    for (let key in x) {
-      // 判断属性是否在对象身上
-      if (x.hasOwnProperty(key)) {
-        result[key] = deepClone(x[key], cache);
-      }
-    }
-  }
-  // 如果是值类型
-  else {
-    result = x;
-  }
-  return result;
-}
+console.log(quickSort([6, 45, 3, 2, 5, 6, 8, 4, 3, 4, 56, 67, 5]));

@@ -9,8 +9,8 @@
 
 好在 React 团队也意识到函数组件可能发生的性能问题，并提供了 `React.memo`、`useMemo`、`useCallback` 这些 API 帮助开发者去优化他们的 React 代码。在使用它们进行优化之前，我想我们需要明确我们使用它们的目的：
 
-1. 减少组件的非必要重新渲染
-2. 减少组件内部的重复计算
+1. 减少组件的**非必要重新渲染**
+2. 减少组件**内部的重复计算**
 
 # 1 使用 React.memo 避免组件的重复渲染
 
@@ -79,7 +79,7 @@ export default App;
 
 而当我点击按钮触发重新渲染后，`Child` 依旧会重新渲染，而 `MemoChild` 则会进行新旧 `props` 的判断，由于 `memoChild` 没有 `props`，即新旧 `props` 相等（都为空），则 `memoChild` 使用之前的渲染结果（缓存），避免了重新渲染。
 
-由此可见，在没有任何优化的情况下，React 中某一组件重新渲染，会导致其全部的**子组件重新渲染**。即通过 `React.memo` 的包裹，在其父组件重新渲染时，可以避免这个组件的非必要重新渲染。
+由此可见，在没有任何优化的情况下，React 中某一组件重新渲染，会导致其**全部的子组件重新渲染**。即通过 `React.memo` 的包裹，在其父组件重新渲染时，可以避免这个组件的非必要重新渲染。
 
 需要注意的是：上文中的【渲染】指的是 React 执行函数组件并生成或更新虚拟 DOM 树（Fiber 树）的过程。在渲染真实 DOM （Commit 阶段）前还有 DOM Diff 的过程，会比对虚拟 DOM 之间的差异，再去渲染变化的 DOM 。不然如果每次更改状态都会重新渲染真实 DOM，那么 React 的性能真就爆炸了（笑）。
 
@@ -126,13 +126,15 @@ export default App;
 
 [![qpR3CT.png](https://s1.ax1x.com/2022/03/16/qpR3CT.png)](https://imgtu.com/i/qpR3CT)
 
-如上图控制台中 log 所示：首次渲染，`sum` 和 `memoSum` 都会根据 `list` 的值进行计算；
+如上图控制台中 log 所示：
 
-当点击 【重新渲染 App】按钮后，虽然 `list` 没有改变，但是 `sum` 的值进行了重新计算，而 `memoSum` 的值则没有重新计算，使用了上一次的计算结果（memolized）。
+1. 首次渲染，`sum` 和 `memoSum` 都会根据 `list` 的值进行计算；
 
-当点击 【往 List 添加一个数字】按钮后，`list` 的值发生改变，`sum` 和 `memoSum` 的值都进行重新计算。
+2. 当点击 【重新渲染 App】按钮后，虽然 `list` 没有改变，但是 `sum` 的值进行了重新计算，而 `memoSum` 的值则没有重新计算，使用了上一次的计算结果（memolized）。
 
-总结：在函数组件内部，一些基于 State 的衍生值和一些复杂的计算可以通过 useMemo 进行性能优化。
+3. 当点击 【往 List 添加一个数字】按钮后，`list` 的值发生改变，`sum` 和 `memoSum` 的值都进行重新计算。
+
+总结：在函数组件内部，一些**基于 State 的衍生值和一些复杂的计算**可以通过 `useMemo` 进行性能优化。
 
 # 3 使用 useCallback 避免子组件的重复渲染
 
@@ -144,8 +146,8 @@ React 的 useCallback 把【回调函数 `fn`】和【依赖项数组 `deps`】�
 
 `useCallback` 与 `useMemo` 都会缓存对应的值，并且只有在依赖变动的时候才会更新缓存，区别在于：
 
-- `useMemo` 会执行传入的回调函数，返回的是函数执行的结果
-- `useCallback` 不会执行传入的回调函数，返回的是函数的引用
+- `useMemo` 会执行传入的回调函数，返回的是**函数执行的结果**
+- `useCallback` 不会执行传入的回调函数，返回的是**函数的引用**
 
 ## useCallback 使用误区
 
@@ -157,8 +159,8 @@ React 的 useCallback 把【回调函数 `fn`】和【依赖项数组 `deps`】�
 
 ## useCallback 正确的使用场景
 
-1. 函数组件内部定义的函数需要作为其他 Hooks 的依赖。
-2. 函数组件内部定义的函数需要传递给其子组件，并且子组件由 `React.memo` 包裹。
+1. 函数组件内部定义的函数需要**作为其他 Hooks 的依赖**。
+2. 函数组件内部定义的函数需要传递给其子组件，并且**子组件由 `React.memo` 包裹**。
 
 场景 1：`useCallback` 主要是为了避免当组件重新渲染时，函数引用变动所导致其它 Hooks 的重新执行，更为甚者可能造成组件的无限渲染：
 
@@ -253,4 +255,4 @@ function App() {
 # 参考文章
 
 - [React 官方文档](https://zh-hans.reactjs.org/docs/hooks-faq.html#performance-optimizations)
-- [Segmentfault 一直以来`useCallback`的使用姿势都不对](https://segmentfault.com/a/1190000022988054)
+- [Segmentfault 一直以来 useCallback 的使用姿势都不对](https://segmentfault.com/a/1190000022988054)

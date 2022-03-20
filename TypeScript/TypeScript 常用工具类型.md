@@ -15,7 +15,7 @@ interface Person {
 }
 
 const tom: Partial<Person> = {
-  name: "Tom",
+  name: 'Tom',
 };
 ```
 
@@ -119,7 +119,7 @@ tom = {
 
 ```ts
 type Required<T> = {
-  Required [P in keyof T]: T[P];
+  [P in keyof T]-?: T[P];
 };
 ```
 
@@ -131,9 +131,9 @@ type Required<T> = {
 
 ```ts
 // 快速生成一个 Person 对象
-type Person = Record<"name" | "country", string>;
+type Person = Record<'name' | 'country', string>;
 
-const Tom: Person = { name: "Tom", country: "America" };
+const Tom: Person = { name: 'Tom', country: 'America' };
 ```
 
 **实现原理**:
@@ -147,7 +147,7 @@ type MyRecord<K extends keyof any, T> = {
 };
 ```
 
-## Exclude\<T,K>
+## Exclude\<T,U>
 
 **作用**：从类型 `T` 中排除所有可以赋值给类型 `U` 的类型。
 
@@ -155,7 +155,7 @@ type MyRecord<K extends keyof any, T> = {
 
 ```ts
 // 从 "a" | "b" | "c" 中排除掉 "a" 类型
-type T1 = Exclude<"a" | "b" | "c", "a">;
+type T1 = Exclude<'a' | 'b' | 'c', 'a'>;
 // T1 = "b" | "c"
 
 // 从 string | number | boolean 中排除掉 string 类型
@@ -174,7 +174,7 @@ type T2 = Exclude<string | number | boolean, string>;
 type Exclude<T, U> = T extends U ? never : T;
 ```
 
-## Extract\<T,K>
+## Extract\<T,U>
 
 **作用**：与 `Exclude` 相反，从类型 `T` 中提取所有可以赋值给类型 `U` 的类型。
 
@@ -182,7 +182,7 @@ type Exclude<T, U> = T extends U ? never : T;
 
 ```ts
 // 从 "a" | "b" | "c" 中提取出 "a" 类型
-type T1 = Extract<"a" | "b" | "c", "a">;
+type T1 = Extract<'a' | 'b' | 'c', 'a'>;
 // T1 = "a"
 
 // 从 string | number | boolean 中提取出 string 类型
@@ -219,10 +219,10 @@ interface Person {
 }
 
 // 从 Person 中摘选出 name 属性
-type PickPerson = Pick<Person, "name">;
+type PickPerson = Pick<Person, 'name'>;
 
 const tom: PickPerson = {
-  name: "Tom",
+  name: 'Tom',
 };
 ```
 
@@ -250,7 +250,7 @@ interface Person {
 }
 
 // 从 Person 中剔除掉 name 属性
-type OmitPerson = Pick<Person, "name">;
+type OmitPerson = Pick<Person, 'name'>;
 
 const tom: PickPerson = {
   age: 18,
